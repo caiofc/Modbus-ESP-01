@@ -24,13 +24,13 @@
 volatile uint16_t y = 0x400;
 volatile uint16_t j;
 
-void ultrasonic_config_timer0(){
+void config_timer0(){
 	
 	/* 
 	 * config timer0 1kHz
 	 * WGM01 -> CTC mode
-	 * top = 15
-	 * 0 prescaler
+	 * top = 249
+	 * 64 prescaler
 	 * Indirect access using avr_timer.h
 	 */
 	TIMER_0->TCCRA |= SET(WGM01);
@@ -54,24 +54,24 @@ int main(){
 	/* Debug */
 	USART_Init(B9600);
 
-	/* Inicializa modo líder */
+	/* Inicializa modo lÃ­der */
 	TWI_Master_Initialise();
 	sei();
 
-	/* Inicializa LCD através do expansor de E/S */
+	/* Inicializa LCD atravÃ©s do expansor de E/S */
 	inic_LCD_4bits_i2c();
 
 	modbus_init();
 	
-	ultrasonic_config_timer0();
+	config_timer0();
 	//fprintf(get_usart_stream(),"Teste de main \n\r");
 	for(;;) {
 		/*
-		obtém dados dos sensores
+		obtÃ©m dados dos sensores
 		*/
 		
 		/*
-		média móvel
+		mÃ©dia mÃ³vel
 		*/
 		
 		/*
@@ -97,14 +97,5 @@ int main(){
 }
 
 ISR(TIMER0_COMPA_vect){
-	//j++;
-	//if (j == 10){							//10us trigger
-		//CLR_BIT(PORT_SONIC->PORT, PIN_TRIGGER);
-	//}
-	//if (j >= MEASURE_TIME_uS){
-		//j = 0;
-		//SET_BIT(PORT_SONIC->PORT, PIN_TRIGGER);
-	//}
-	//fprintf(get_usart_stream(),"Teste de timer0 \n\r");
 	modbus_rx_timeout_inc();
 }
