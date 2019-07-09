@@ -38,11 +38,6 @@ void config_timer0(){
 	TIMER_0->OCRA = 0xF9;
 	TIMER_IRQS->TC0.MASK |= SET(OCIE0A);
 	
-	/*
-	 * config echo port and interruption
-	 * 
-	 */
-	//PORT_SONIC->DDR |= SET(PIN_ECHO);
 	fprintf(get_usart_stream(),"Teste de config_timer0 \n\r");
 }
 
